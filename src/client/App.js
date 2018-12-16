@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Usuario from './Usuario';
+import axios from 'axios';
 
 class App extends Component {
     
@@ -11,24 +13,31 @@ class App extends Component {
         password: ''
       }
 
-      this.agregarUsuario = this.agregarUsuario.bind(this);
-
-      this.nombreRef   = React.createRef();
-      this.emailRef    = React.createRef();
-      this.passwordRef = React.createRef();
-
-    }
-
-
-    agregarUsuario(e){
-      e.preventDefault();
-      console.log("agregando usuario");
-
-      console.log(this.nombreRef.current.value);
-      console.log(this.emailRef.current.value);
-      console.log(this.passwordRef.current.value);
       
+
+      this.obtenerEventos = this.obtenerEventos.bind(this);
+
     }
+    
+    
+    obtenerEventos(busqueda){
+
+      console.log(busqueda);
+      
+      let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+      };
+      
+      axios.post('/api/user', busqueda, axiosConfig)
+           .then(res => console.log(res));
+      
+    
+
+    }       
+
 
     render() {
         return (
@@ -41,38 +50,9 @@ class App extends Component {
           </nav>
 
           <div className="container">
-            <div className="row">
-              <div className="col s5">
-                  <div className="card">
-                    <div className="card-content">
-                      <form onSubmit={this.agregarUsuario}>
-                        
-                        <div className="row">
-                            <div className="input-field col s12">
-                                <input ref={this.nombreRef} type="text" placeholder="Nombre" />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="input-field col s12">
-                                <input ref={this.emailRef} type="text" placeholder="E-mail" />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="input-field col s12">
-                                <input ref={this.passwordRef} type="text" placeholder="Password" />
-                            </div>
-                        </div>
-
-                        <button type="submit" className="btn light-blue darken-4">Send</button>
-                      </form>
-                    </div>
-                  </div>
-              </div>
-              <div className="col s7">
-              </div>
-            </div>
+              <Usuario 
+                 obtenerEventos = {this.obtenerEventos}
+              />
           </div>
 
         </div>
